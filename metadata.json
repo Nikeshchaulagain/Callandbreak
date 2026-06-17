@@ -1,0 +1,6 @@
+{
+  "name": "NIKESH CALLBREAK",
+  "description": "A 4-player CallBreak scoreboard to track bids, tricks made, and calculated scores over 5 rounds with automatic winner declaration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
