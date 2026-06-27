@@ -11,9 +11,9 @@ interface SetupScreenProps {
 export default function SetupScreen({ onStartGame }: SetupScreenProps) {
   const [names, setNames] = useState<string[]>([
     'Nikesh',
-    'Emma',
-    'Sam',
-    'Sophia'
+    'Unish',
+    'Paras',
+    'Kuldeep'
   ]);
   const [error, setError] = useState<string>('');
 

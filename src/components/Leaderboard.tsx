@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Trophy, Award, TrendingUp, Sparkles, AlertCircle } from 'lucide-react';
+import { Trophy, Award, TrendingUp, Sparkles, AlertCircle, Crown } from 'lucide-react';
 import { Player, RoundData, PlayerStats } from '../types';
 
 interface LeaderboardProps {
@@ -156,7 +156,7 @@ export default function Leaderboard({ players, rounds, onDeclareWinner, isGameCo
               id="btn-declare-winner-lb"
               className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-brand-from to-brand-to text-brand-text font-extrabold uppercase tracking-widest text-xs rounded-2xl shadow-lg shadow-theme-success/10 hover:shadow-xl hover:shadow-theme-success/20 transition-all cursor-pointer active:scale-95"
             >
-              <Trophy className="w-4 h-4 fill-current animate-bounce" />
+              <Crown className="w-4 h-4 fill-current animate-bounce" />
               <span>Declare Winner</span>
             </button>
           )}

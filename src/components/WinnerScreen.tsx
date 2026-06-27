@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Trophy, Award, Sparkles, RefreshCw, Calendar, Flame, Check, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Crown, Award, Sparkles, RefreshCw, Calendar, Flame, Check, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Player, RoundData, PlayerStats } from '../types';
 import { computeStats } from './Leaderboard';
 
@@ -38,7 +38,7 @@ export default function WinnerScreen({
           transition={{ type: 'spring', damping: 15 }}
           className="inline-flex p-4 bg-gradient-to-r from-brand-from to-brand-to text-brand-text rounded-3xl shadow-2xl mb-2"
         >
-          <Trophy className="w-12 h-12 fill-current" />
+          <Crown className="w-12 h-12 fill-current text-amber-300" />
         </motion.div>
         
         <motion.p
