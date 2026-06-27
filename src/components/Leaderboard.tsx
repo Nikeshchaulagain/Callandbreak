@@ -69,15 +69,15 @@ export default function Leaderboard({ players, rounds, onDeclareWinner, isGameCo
   const activeRoundsCount = rounds.filter(r => r.isLocked).length;
 
   return (
-    <div className="bg-[#111115]/65 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl h-full flex flex-col" id="leaderboard-container">
+    <div className="bg-[var(--bg-card)] backdrop-blur-md border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl h-full flex flex-col transition-colors duration-250" id="leaderboard-container">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-emerald-400" />
-          <h3 className="font-bold text-sm uppercase tracking-wider font-display text-white">
+          <Trophy className="w-5 h-5 text-theme-success" />
+          <h3 className="font-bold text-sm uppercase tracking-wider font-display text-[var(--text-main)]">
             Current Standings
           </h3>
         </div>
-        <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-bold font-mono uppercase tracking-wider">
+        <span className="text-[10px] bg-theme-success-bg border border-theme-success-border text-theme-success px-3 py-1 rounded-full font-bold font-mono uppercase tracking-wider">
           Rounds: {activeRoundsCount}/5
         </span>
       </div>
@@ -93,30 +93,30 @@ export default function Leaderboard({ players, rounds, onDeclareWinner, isGameCo
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               className={`p-4 rounded-2xl flex items-center justify-between border transition-all ${
                 isFirst
-                  ? 'bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.05)]'
-                  : 'bg-white/[0.02] border-white/5'
+                  ? 'bg-theme-success-bg border-theme-success-border shadow-lg shadow-theme-success/5'
+                  : 'bg-[var(--bg-hover)] border-[var(--border-color)]'
               }`}
               id={`leaderboard-row-${stat.id}`}
             >
               <div className="flex items-center gap-3">
                 <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs ${
                   stat.rank === 1
-                    ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 text-black'
+                    ? 'bg-gradient-to-r from-brand-from to-brand-to text-brand-text'
                     : stat.rank === 2
-                    ? 'bg-white/20 text-white'
+                    ? 'bg-[var(--btn-secondary-hover)] text-[var(--text-main)]'
                     : stat.rank === 3
-                    ? 'bg-white/10 text-white/70'
-                    : 'bg-white/5 text-white/40'
+                    ? 'bg-[var(--btn-secondary-bg)] text-[var(--text-semi-muted)]'
+                    : 'bg-[var(--bg-input)] text-[var(--text-muted)]'
                 }`}>
                   {stat.rank}
                 </span>
                 <div>
-                  <div className="font-bold text-white flex items-center gap-1.5 text-sm">
+                  <div className="font-bold text-[var(--text-main)] flex items-center gap-1.5 text-sm">
                     <span>{stat.name}</span>
-                    {isFirst && <Sparkles className="w-3.5 h-3.5 text-emerald-400 fill-emerald-450/20" />}
+                    {isFirst && <Sparkles className="w-3.5 h-3.5 text-theme-success fill-theme-success-bg" />}
                   </div>
-                  <div className="text-[10px] text-white/40 flex items-center gap-2 mt-0.5 uppercase font-medium tracking-wider">
-                    <span className="flex items-center gap-0.5 text-emerald-400">
+                  <div className="text-[10px] text-[var(--text-muted)] flex items-center gap-2 mt-0.5 uppercase font-medium tracking-wider">
+                    <span className="flex items-center gap-0.5 text-theme-success">
                       <TrendingUp className="w-3 h-3" />
                       Succeed: {stat.successfulCalls}
                     </span>
@@ -127,10 +127,10 @@ export default function Leaderboard({ players, rounds, onDeclareWinner, isGameCo
               </div>
 
               <div className="text-right">
-                <div className="font-black text-base md:text-lg font-mono text-white text-glow-emerald">
+                <div className="font-black text-base md:text-lg font-mono text-[var(--text-main)] text-glow-emerald">
                   {stat.totalScore.toFixed(1)}
                 </div>
-                <div className="text-[9px] text-white/30 uppercase tracking-widest font-bold">
+                <div className="text-[9px] text-[var(--text-muted)] uppercase tracking-widest font-bold">
                   pts
                 </div>
               </div>
@@ -143,27 +143,27 @@ export default function Leaderboard({ players, rounds, onDeclareWinner, isGameCo
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="mt-6 pt-4 border-t border-white/10 space-y-3"
+          className="mt-6 pt-4 border-t border-[var(--border-color)] space-y-3"
           id="leaderboard-footer"
         >
-          <div className="flex items-start gap-2 bg-emerald-500/10 border border-emerald-500/25 p-3 rounded-2xl text-[11px] text-emerald-300">
-            <Award className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
+          <div className="flex items-start gap-2 bg-theme-success-bg border border-theme-success-border p-3 rounded-2xl text-[11px] text-theme-success">
+            <Award className="w-4 h-4 shrink-0 text-theme-success mt-0.5" />
             <span className="uppercase tracking-wider font-semibold">5 rounds complete! Crown the ultimate winner.</span>
           </div>
           {onDeclareWinner && (
             <button
               onClick={onDeclareWinner}
               id="btn-declare-winner-lb"
-              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 font-extrabold text-black uppercase tracking-widest text-xs rounded-2xl shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:shadow-[0_4px_30px_rgba(16,185,129,0.55)] transition-all cursor-pointer active:scale-95"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-brand-from to-brand-to text-brand-text font-extrabold uppercase tracking-widest text-xs rounded-2xl shadow-lg shadow-theme-success/10 hover:shadow-xl hover:shadow-theme-success/20 transition-all cursor-pointer active:scale-95"
             >
-              <Trophy className="w-4 h-4 text-black fill-current animate-bounce" />
+              <Trophy className="w-4 h-4 fill-current animate-bounce" />
               <span>Declare Winner</span>
             </button>
           )}
         </motion.div>
       ) : (
-        <div className="mt-6 pt-4 border-t border-white/10 flex items-center gap-2 text-white/30 text-[10px] uppercase tracking-wider font-semibold">
-          <AlertCircle className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="mt-6 pt-4 border-t border-[var(--border-color)] flex items-center gap-2 text-[var(--text-muted)] text-[10px] uppercase tracking-wider font-semibold">
+          <AlertCircle className="w-3.5 h-3.5 text-theme-success" />
           <span>Record all 5 rounds to declare.</span>
         </div>
       )}

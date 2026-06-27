@@ -36,15 +36,15 @@ export default function WinnerScreen({
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', damping: 15 }}
-          className="inline-flex p-4 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black rounded-3xl shadow-2xl shadow-emerald-500/20 mb-2"
+          className="inline-flex p-4 bg-gradient-to-r from-brand-from to-brand-to text-brand-text rounded-3xl shadow-2xl mb-2"
         >
-          <Trophy className="w-12 h-12 text-black" />
+          <Trophy className="w-12 h-12 fill-current" />
         </motion.div>
         
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-emerald-400 font-black uppercase tracking-widest text-xs font-mono"
+          className="text-theme-success font-black uppercase tracking-widest text-xs font-mono"
         >
           Tournament Concluded • 5 Rounds Locked
         </motion.p>
@@ -52,7 +52,7 @@ export default function WinnerScreen({
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-black font-display bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 uppercase tracking-tight"
+          className="text-4xl md:text-5xl font-black font-display bg-clip-text text-transparent bg-gradient-to-r from-brand-from to-brand-to uppercase tracking-tight"
         >
           Victory Declared
         </motion.h1>
@@ -68,17 +68,17 @@ export default function WinnerScreen({
           transition={{ delay: 0.2, type: 'spring' }}
           className="flex flex-col items-center"
         >
-          <span className="text-white/60 text-xs font-bold mb-2 max-w-[80px] truncate text-center uppercase tracking-wider flex items-center gap-1 justify-center">
+          <span className="text-[var(--text-semi-muted)] text-xs font-bold mb-2 max-w-[80px] truncate text-center uppercase tracking-wider flex items-center gap-1 justify-center transition-colors duration-250">
             🥈 {podium2nd?.name}
           </span>
-          <div className="w-8 h-8 rounded-full bg-slate-400 text-slate-950 font-black flex items-center justify-center border-2 border-white/10 text-sm shadow-md z-10">
+          <div className="w-8 h-8 rounded-full bg-slate-400 text-slate-950 font-black flex items-center justify-center border-2 border-[var(--border-color)] text-sm shadow-md z-10">
             🥈
           </div>
-          <div className="w-full bg-[#111115] border border-white/10 rounded-t-2xl h-24 flex flex-col items-center justify-center shadow-inner mt-[-16px] pt-4">
-            <span className="font-mono font-black text-white text-base">
+          <div className="w-full bg-[var(--bg-card-solid)] border border-[var(--border-color)] rounded-t-2xl h-24 flex flex-col items-center justify-center shadow-inner mt-[-16px] pt-4 transition-colors duration-250">
+            <span className="font-mono font-black text-[var(--text-main)] text-base">
               {podium2nd?.totalScore.toFixed(1)}
             </span>
-            <span className="text-[9px] text-white/30 uppercase tracking-widest font-mono font-bold">PTS</span>
+            <span className="text-[9px] text-[var(--text-muted)] uppercase tracking-widest font-mono font-bold">PTS</span>
           </div>
         </motion.div>
 
@@ -89,20 +89,20 @@ export default function WinnerScreen({
           transition={{ delay: 0.1, type: 'spring' }}
           className="flex flex-col items-center relative"
         >
-          <div className="absolute top-[-44px] text-emerald-400 animate-pulse">
-            <Sparkles className="w-7 h-7 fill-emerald-500/20" />
+          <div className="absolute top-[-44px] text-theme-success animate-pulse">
+            <Sparkles className="w-7 h-7 fill-theme-success-bg" />
           </div>
-          <span className="text-emerald-400 font-extrabold text-sm mb-2 max-w-[100px] truncate text-center uppercase tracking-widest flex items-center gap-1 justify-center">
+          <span className="text-theme-success font-extrabold text-sm mb-2 max-w-[100px] truncate text-center uppercase tracking-widest flex items-center gap-1 justify-center">
             👑 {podium1st?.name}
           </span>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-450 to-cyan-455 text-black font-black flex items-center justify-center border-2 border-white/20 text-base shadow-lg z-10">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-brand-from to-brand-to text-brand-text font-black flex items-center justify-center border-2 border-theme-success-border text-base shadow-lg z-10">
             🥇
           </div>
-          <div className="w-full bg-emerald-500/10 border-2 border-emerald-500/30 rounded-t-3xl h-36 flex flex-col items-center justify-center shadow-2xl mt-[-20px] pt-4">
-            <span className="font-mono font-black text-emerald-400 text-xl text-glow-emerald">
+          <div className="w-full bg-theme-success-bg border-2 border-theme-success-border rounded-t-3xl h-36 flex flex-col items-center justify-center shadow-2xl mt-[-20px] pt-4">
+            <span className="font-mono font-black text-theme-success text-xl text-glow-emerald">
               {podium1st?.totalScore.toFixed(1)}
             </span>
-            <span className="text-[10px] text-emerald-400 uppercase tracking-widest font-mono font-extrabold">PTS</span>
+            <span className="text-[10px] text-theme-success uppercase tracking-widest font-mono font-extrabold">PTS</span>
           </div>
         </motion.div>
 
@@ -116,14 +116,14 @@ export default function WinnerScreen({
           <span className="text-amber-600 dark:text-amber-500/90 text-xs font-bold mb-2 max-w-[80px] truncate text-center uppercase tracking-wider flex items-center gap-1 justify-center">
             🥉 {podium3rd?.name}
           </span>
-          <div className="w-8 h-8 rounded-full bg-amber-700/80 text-white font-black flex items-center justify-center border-2 border-white/5 text-sm shadow-md z-10">
+          <div className="w-8 h-8 rounded-full bg-amber-700/80 text-white font-black flex items-center justify-center border-2 border-[var(--border-color)] text-sm shadow-md z-10">
             🥉
           </div>
-          <div className="w-full bg-[#111115] border border-white/5 rounded-t-2xl h-18 flex flex-col items-center justify-center shadow-inner mt-[-16px] pt-4">
-            <span className="font-mono font-black text-white/80 text-sm">
+          <div className="w-full bg-[var(--bg-card-solid)] border border-[var(--border-color)] rounded-t-2xl h-18 flex flex-col items-center justify-center shadow-inner mt-[-16px] pt-4 transition-colors duration-250">
+            <span className="font-mono font-black text-[var(--text-semi-muted)] text-sm">
               {podium3rd?.totalScore.toFixed(1)}
             </span>
-            <span className="text-[9px] text-white/30 uppercase tracking-widest font-mono font-bold">PTS</span>
+            <span className="text-[9px] text-[var(--text-muted)] uppercase tracking-widest font-mono font-bold">PTS</span>
           </div>
         </motion.div>
 
@@ -135,12 +135,12 @@ export default function WinnerScreen({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="max-w-xs mx-auto p-3.5 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center justify-between text-xs text-white/50"
+          className="max-w-xs mx-auto p-3.5 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-2xl flex items-center justify-between text-xs text-[var(--text-muted)] transition-colors duration-250"
           id="fourth-place-panel"
         >
-          <span className="font-bold font-mono text-white/40 bg-white/5 px-2 py-0.5 rounded-lg mr-2 uppercase tracking-wide text-[9px]">4th position</span>
-          <span className="font-bold text-white/80 flex-1 truncate">{podium4th.name}</span>
-          <span className="font-mono font-black text-white">{podium4th.totalScore.toFixed(1)} pts</span>
+          <span className="font-bold font-mono text-[var(--text-muted)] bg-[var(--btn-secondary-bg)] px-2 py-0.5 rounded-lg mr-2 uppercase tracking-wide text-[9px]">4th position</span>
+          <span className="font-bold text-[var(--text-semi-muted)] flex-1 truncate">{podium4th.name}</span>
+          <span className="font-mono font-black text-[var(--text-main)]">{podium4th.totalScore.toFixed(1)} pts</span>
         </motion.div>
       )}
 
@@ -156,59 +156,59 @@ export default function WinnerScreen({
               initial={{ scale: 0.98, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
-              className="bg-[#111115]/65 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl flex flex-col justify-between"
+              className="bg-[var(--bg-card)] backdrop-blur-md border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl flex flex-col justify-between transition-colors duration-250"
               id={`stat-card-${stat.id}`}
             >
-              <div className="relative z-10 flex items-center justify-between pb-4 border-b border-white/5">
+              <div className="relative z-10 flex items-center justify-between pb-4 border-b border-[var(--border-color)]">
                 <div className="flex items-center gap-3">
                   <span className={`w-7 h-7 rounded-lg font-black text-sm flex items-center justify-center ${
                     stat.rank === 1
-                      ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 text-black'
+                      ? 'bg-gradient-to-r from-brand-from to-brand-to text-brand-text'
                       : stat.rank === 2
                       ? 'bg-slate-500 text-black'
                       : stat.rank === 3
                       ? 'bg-amber-750 text-white'
-                      : 'bg-white/10 text-white/50'
+                      : 'bg-[var(--btn-secondary-bg)] text-[var(--text-muted)]'
                   }`}>
                     {stat.rank === 1 ? '🥇' : stat.rank === 2 ? '🥈' : stat.rank === 3 ? '🥉' : `#${stat.rank}`}
                   </span>
-                  <h4 className="font-bold text-white text-base">
+                  <h4 className="font-bold text-[var(--text-main)] text-base">
                     {stat.name}
                   </h4>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono font-black text-emerald-400 text-base md:text-lg text-glow-emerald">
+                  <span className="font-mono font-black text-theme-success text-base md:text-lg text-glow-emerald">
                     {stat.totalScore.toFixed(1)}
                   </span>
-                  <span className="text-[10px] text-white/40 uppercase font-black font-mono ml-1.5">PTS</span>
+                  <span className="text-[10px] text-[var(--text-muted)] uppercase font-black font-mono ml-1.5">PTS</span>
                 </div>
               </div>
 
               {/* Stat grid */}
               <div className="grid grid-cols-3 gap-2 py-4 text-center">
-                <div className="p-2 sm:p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                  <span className="text-[9px] uppercase font-bold text-white/40 tracking-wider block">
+                <div className="p-2 sm:p-3 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-xl">
+                  <span className="text-[9px] uppercase font-bold text-[var(--text-muted)] tracking-wider block">
                     Bids Success
                   </span>
-                  <span className="font-mono font-bold text-white block text-xs sm:text-xs mt-1">
+                  <span className="font-mono font-bold text-[var(--text-main)] block text-xs sm:text-xs mt-1">
                     {stat.successfulCalls} / {totalCalls}
                   </span>
                 </div>
                 
-                <div className="p-2 sm:p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                  <span className="text-[9px] uppercase font-bold text-white/40 tracking-wider block">
+                <div className="p-2 sm:p-3 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-xl">
+                  <span className="text-[9px] uppercase font-bold text-[var(--text-muted)] tracking-wider block">
                     Avg Score
                   </span>
-                  <span className="font-mono font-bold text-white block text-xs sm:text-xs mt-1">
+                  <span className="font-mono font-bold text-[var(--text-main)] block text-xs sm:text-xs mt-1">
                     {stat.avgScore.toFixed(1)}
                   </span>
                 </div>
 
-                <div className="p-2 sm:p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                  <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider block">
+                <div className="p-2 sm:p-3 bg-theme-success-bg border border-theme-success-border rounded-xl">
+                  <span className="text-[9px] uppercase font-bold text-theme-success tracking-wider block">
                     Best hand
                   </span>
-                  <span className="font-mono font-bold text-emerald-450 block text-xs sm:text-xs mt-1">
+                  <span className="font-mono font-bold text-theme-success block text-xs sm:text-xs mt-1">
                     +{stat.highestRound.toFixed(1)}
                   </span>
                 </div>
@@ -216,13 +216,13 @@ export default function WinnerScreen({
 
               {/* Success Ratio Bar */}
               <div className="space-y-1.5 pt-2">
-                <div className="flex items-center justify-between text-[10px] text-white/40 font-bold uppercase tracking-wider">
+                <div className="flex items-center justify-between text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider">
                   <span>Accuracy on estimations</span>
-                  <span className="font-mono font-bold text-emerald-400">{accuracy}%</span>
+                  <span className="font-mono font-bold text-theme-success">{accuracy}%</span>
                 </div>
-                <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                <div className="w-full bg-[var(--bg-input)] rounded-full h-1.5 overflow-hidden">
                   <div
-                    className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-emerald-500 to-cyan-500"
+                    className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-brand-from to-brand-to"
                     style={{ width: `${accuracy}%` }}
                   />
                 </div>
@@ -233,11 +233,11 @@ export default function WinnerScreen({
       </div>
 
       {/* Interactive Recovery & Replay Action Board */}
-      <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-4" id="action-board text-center">
+      <div className="pt-6 border-t border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-center gap-4" id="action-board text-center">
         <button
           onClick={onBackToGame}
           id="btn-back-to-scoreboard"
-          className="w-full sm:w-auto px-5 py-3.5 border border-white/10 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 text-xs uppercase tracking-widest"
+          className="w-full sm:w-auto px-5 py-3.5 border border-[var(--border-color)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] text-[var(--text-main)] font-semibold rounded-2xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 text-xs uppercase tracking-widest"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Grid</span>
@@ -246,9 +246,9 @@ export default function WinnerScreen({
         <button
           onClick={onPlayAgainSame}
           id="btn-play-again-same"
-          className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-extrabold rounded-2xl shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:shadow-[0_4px_30px_rgba(16,185,129,0.55)] flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 text-xs uppercase tracking-widest"
+          className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-brand-from to-brand-to text-brand-text font-extrabold rounded-2xl shadow-lg shadow-theme-success/10 hover:shadow-xl hover:shadow-theme-success/20 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 text-xs uppercase tracking-widest"
         >
-          <RefreshCw className="w-4 h-4 text-black" />
+          <RefreshCw className="w-4 h-4 fill-current" />
           <span>Rematch Same Players</span>
         </button>
 

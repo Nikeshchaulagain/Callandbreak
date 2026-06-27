@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Trophy, RefreshCw, AlertTriangle, Users, BookOpen, Flame, HelpCircle } from 'lucide-react';
+import { Trophy, RefreshCw, AlertTriangle, Users, BookOpen, Flame, HelpCircle, Volume2, VolumeX } from 'lucide-react';
 import { Player, RoundData, GameState } from './types';
+import { audioSystem } from './utils/audio';
 import SetupScreen from './components/SetupScreen';
 import ScoreTable from './components/ScoreTable';
 import Leaderboard from './components/Leaderboard';
@@ -22,6 +23,16 @@ const createEmptyRoundsCount = (length: number): RoundData[] =>
   }));
 
 export default function App() {
+  const [muted, setMuted] = useState(audioSystem.isMuted());
+
+  const toggleMute = () => {
+    const isNowMuted = audioSystem.toggleMuted();
+    setMuted(isNowMuted);
+    if (!isNowMuted) {
+      audioSystem.playClick();
+    }
+  };
+
   const [players, setPlayers] = useState<Player[]>([]);
   const [rounds, setRounds] = useState<RoundData[]>(createEmptyRoundsCount(5));
   const [gameState, setGameState] = useState<GameState>('setup');
@@ -33,6 +44,8 @@ export default function App() {
   
   // Tutorial panel toggle
   const [showHowToPlay, setShowHowToPlay] = useState(false);
+
+
 
   // Load from LocalStorage
   useEffect(() => {
@@ -63,6 +76,7 @@ export default function App() {
   };
 
   const handleStartGame = (newPlayers: Player[]) => {
+    audioSystem.playSuccess();
     const freshRounds = createEmptyRoundsCount(5);
     setPlayers(newPlayers);
     setRounds(freshRounds);
@@ -71,6 +85,7 @@ export default function App() {
   };
 
   const handleSaveRoundScores = (roundNumber: number, roundPlayersData: any) => {
+    audioSystem.playSuccess();
     const updatedRounds = rounds.map(r => {
       if (r.roundNumber === roundNumber) {
         return {
@@ -86,20 +101,24 @@ export default function App() {
   };
 
   const handleOpenRoundEdit = (roundNo: number) => {
+    audioSystem.playClick();
     setActiveRoundNumber(roundNo);
   };
 
   const handleDeclareWinner = () => {
+    audioSystem.playCelebration();
     setGameState('declared');
     saveState(players, rounds, 'declared');
   };
 
   const initiateReset = (type: 'soft' | 'hard') => {
+    audioSystem.playClick();
     setResetType(type);
     setShowResetConfirm(true);
   };
 
   const handleConfirmReset = () => {
+    audioSystem.playSuccess();
     setShowResetConfirm(false);
     if (resetType === 'soft') {
       // Soft reset: Rematch with the same players
@@ -121,32 +140,45 @@ export default function App() {
   const isGameComplete = rounds.every(r => r.isLocked);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white font-sans selection:bg-emerald-500/20 selection:text-emerald-400 pb-12" id="app-wrapper">
+    <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-main)] font-sans selection:bg-theme-success-bg selection:text-theme-success pb-12 transition-colors duration-250" id="app-wrapper">
       {/* Navbar layout */}
-      <header className="border-b border-white/10 bg-[#111115]/80 backdrop-blur-md sticky top-0 z-30 shadow-2xl" id="app-header">
+      <header className="border-b border-[var(--border-color)] bg-[var(--bg-header)] backdrop-blur-md sticky top-0 z-30 shadow-2xl transition-colors duration-250" id="app-header">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-black flex items-center justify-center font-black text-sm uppercase tracking-wider shadow-lg shadow-emerald-500/20" id="header-logo">
+            <span className="w-10 h-10 rounded-xl bg-gradient-to-r from-brand-from to-brand-to text-brand-text flex items-center justify-center font-black text-sm uppercase tracking-wider shadow-lg" id="header-logo">
               CB
             </span>
             <div>
-              <h1 className="font-extrabold text-base tracking-widest font-display text-white uppercase">
+              <h1 className="font-extrabold text-base tracking-widest font-display text-[var(--text-main)] uppercase">
                 NIKESH CALLBREAK
               </h1>
-              <p className="text-[9px] text-white/40 font-mono tracking-widest uppercase">
+              <p className="text-[9px] text-[var(--text-muted)] font-mono tracking-widest uppercase">
                 Interactive Score Engine
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
+            {/* Sound Toggle Button */}
+            <button
+              onClick={toggleMute}
+              id="btn-toggle-sound"
+              aria-label="Toggle sound effects"
+              className="flex items-center justify-center p-2.5 border border-[var(--border-color)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] rounded-xl text-[var(--text-semi-muted)] hover:text-[var(--text-main)] cursor-pointer transition-all active:scale-90"
+            >
+              {muted ? <VolumeX className="w-4 h-4 text-rose-500 animate-pulse" /> : <Volume2 className="w-4 h-4 text-theme-success" />}
+            </button>
+
             {/* Guide Button */}
             <button
-              onClick={() => setShowHowToPlay(!showHowToPlay)}
+              onClick={() => {
+                audioSystem.playClick();
+                setShowHowToPlay(!showHowToPlay);
+              }}
               id="btn-toggle-guide"
-              className="flex items-center gap-1.5 px-3.5 py-2 border border-white/10 hover:bg-white/5 rounded-xl text-white/80 hover:text-white text-xs font-bold cursor-pointer transition-all uppercase tracking-wider"
+              className="flex items-center gap-1.5 px-3.5 py-2 border border-[var(--border-color)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] rounded-xl text-[var(--text-semi-muted)] hover:text-[var(--text-main)] text-xs font-bold cursor-pointer transition-all uppercase tracking-wider"
             >
-              <BookOpen className="w-4 h-4 text-emerald-400" />
+              <BookOpen className="w-4 h-4 text-theme-success" />
               <span className="hidden sm:inline">How To Play</span>
             </button>
 
@@ -154,7 +186,7 @@ export default function App() {
               <button
                 onClick={() => initiateReset('hard')}
                 id="btn-header-reset"
-                className="px-3.5 py-2 text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 rounded-xl text-xs font-bold cursor-pointer transition-all uppercase tracking-wider"
+                className="px-3.5 py-2 text-theme-danger hover:bg-theme-danger-bg border border-theme-danger-border rounded-xl text-xs font-bold cursor-pointer transition-all uppercase tracking-wider"
               >
                 Reset Match
               </button>
@@ -176,37 +208,37 @@ export default function App() {
               className="mb-6 overflow-hidden"
               id="how-to-play-drawer"
             >
-              <div className="bg-white/[0.02] border border-white/10 p-6 rounded-3xl space-y-4">
+              <div className="bg-[var(--bg-input)] border border-[var(--border-color)] p-6 rounded-3xl space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-extrabold text-white text-sm flex items-center gap-2 uppercase tracking-widest text-[11px]">
-                    <HelpCircle className="w-5 h-5 text-emerald-400" />
+                  <h3 className="font-extrabold text-[var(--text-main)] text-sm flex items-center gap-2 uppercase tracking-widest text-[11px]">
+                    <HelpCircle className="w-5 h-5 text-theme-success" />
                     How CallBreak scoring Works
                   </h3>
                   <button
                     onClick={() => setShowHowToPlay(false)}
-                    className="text-emerald-450 hover:text-emerald-300 text-xs font-bold uppercase tracking-wider cursor-pointer"
+                    className="text-theme-success hover:text-theme-success/80 text-xs font-bold uppercase tracking-wider cursor-pointer"
                   >
                     Hide [x]
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-white/60">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-[var(--text-semi-muted)]">
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider">1. The Bid call</h4>
-                    <p className="leading-relaxed text-white/40">
+                    <h4 className="font-bold text-[var(--text-main)] uppercase tracking-wider">1. The Bid call</h4>
+                    <p className="leading-relaxed text-[var(--text-muted)]">
                       Players announce their projected trick wins from 1 to 13 before actual trickplay commences.
                     </p>
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider">2. Score formulation</h4>
-                    <p className="leading-relaxed text-white/40">
+                    <h4 className="font-bold text-[var(--text-main)] uppercase tracking-wider">2. Score formulation</h4>
+                    <p className="leading-relaxed text-[var(--text-muted)]">
                       - **Match / Exceed**: Earn points equivalent to call. Excess wins value at 0.1 points each.
                       <br/>
                       - **Under**: Fail leads to subtraction equal to your call.
                     </p>
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider">3. 13-tricks integrity</h4>
-                    <p className="leading-relaxed text-white/40">
+                    <h4 className="font-bold text-[var(--text-main)] uppercase tracking-wider">3. 13-tricks integrity</h4>
+                    <p className="leading-relaxed text-[var(--text-muted)]">
                       Since total deck values distribute to 4 hands, the exact sum of wins cannot exceed 13 items.
                     </p>
                   </div>
@@ -273,24 +305,24 @@ export default function App() {
       {/* Safety Dialog: Confirmation Modal for Resetting */}
       <AnimatePresence>
         {showResetConfirm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a0a0c]/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--modal-overlay)] backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-sm bg-[#111115] border border-white/15 rounded-3xl p-6 shadow-2xl space-y-6"
+              className="w-full max-w-sm bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6"
               id="reset-confirm-modal"
             >
               <div className="flex items-center gap-3 text-rose-400">
                 <div className="p-2 bg-rose-500/10 rounded-xl border border-rose-500/20">
                   <AlertTriangle className="w-5 h-5" />
                 </div>
-                <h3 className="font-extrabold text-sm uppercase tracking-wider text-white">
+                <h3 className="font-extrabold text-sm uppercase tracking-wider text-[var(--text-main)]">
                   Confirm Reset Action
                 </h3>
               </div>
               
-              <p className="text-xs text-white/50 leading-relaxed uppercase tracking-wide">
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed uppercase tracking-wide">
                 {resetType === 'soft'
                   ? 'Are you sure you want to trigger a Rematch? This will clear all 5 rounds of bids and tricks but preserve your current 4 player names.'
                   : 'Are you sure you want to perform a Full Reset? This will completely clear all current scores, names, and statistics so you can configure fresh profiles.'}
@@ -300,7 +332,7 @@ export default function App() {
                 <button
                   onClick={() => setShowResetConfirm(false)}
                   id="btn-cancel-reset"
-                  className="px-4 py-2.5 border border-white/10 bg-white/5 hover:bg-white/10 text-white/80 font-bold rounded-xl text-xs uppercase tracking-widest cursor-pointer active:scale-95"
+                  className="px-4 py-2.5 border border-[var(--border-color)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] text-[var(--text-semi-muted)] font-bold rounded-xl text-xs uppercase tracking-widest cursor-pointer active:scale-95"
                 >
                   Cancel
                 </button>

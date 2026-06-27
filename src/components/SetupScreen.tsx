@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Users, AlertCircle, Play, UserCheck2 } from 'lucide-react';
 import { Player } from '../types';
+import { audioSystem } from '../utils/audio';
 
 interface SetupScreenProps {
   onStartGame: (players: Player[]) => void;
@@ -49,6 +50,7 @@ export default function SetupScreen({ onStartGame }: SetupScreenProps) {
   };
 
   const handleRandomizeNames = () => {
+    audioSystem.playClick();
     const presetPools = [
       ['Rohan', 'Anjali', 'Bibek', 'Sandesh'],
       ['Nikesh', 'Aarav', 'Maya', 'Pradeep'],
@@ -66,21 +68,21 @@ export default function SetupScreen({ onStartGame }: SetupScreenProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="w-full max-w-lg bg-[#111115]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden"
+        className="w-full max-w-lg bg-[var(--bg-card)] backdrop-blur-md border border-[var(--border-color)] rounded-3xl p-8 shadow-2xl relative overflow-hidden transition-colors duration-250"
         id="setup-screen-container"
       >
         {/* Subtle decorative background glow */}
-        <div className="absolute top-0 left-1/4 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 left-1/4 w-48 h-48 bg-theme-success-bg/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-theme-success-bg/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="flex flex-col items-center text-center mb-8 relative z-10">
-          <div className="w-16 h-16 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 rounded-2xl flex items-center justify-center shadow-inner mb-4">
+          <div className="w-16 h-16 bg-theme-success-bg border border-theme-success-border text-theme-success rounded-2xl flex items-center justify-center shadow-inner mb-4">
             <Users className="w-8 h-8" />
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight font-display bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 uppercase">
+          <h1 className="text-3xl font-extrabold tracking-tight font-display bg-clip-text text-transparent bg-gradient-to-r from-brand-from to-brand-to uppercase">
             NIKESH CALLBREAK
           </h1>
-          <p className="text-white/40 mt-2 text-xs max-w-sm font-medium uppercase tracking-wider">
+          <p className="text-[var(--text-muted)] mt-2 text-xs max-w-sm font-medium uppercase tracking-wider transition-colors duration-250">
             Match Configuration Setup
           </p>
         </div>
@@ -95,7 +97,7 @@ export default function SetupScreen({ onStartGame }: SetupScreenProps) {
                 transition={{ delay: idx * 0.1 }}
                 className="relative"
               >
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-400/55">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-theme-success/55">
                   <UserCheck2 className="w-5 h-5" />
                 </div>
                 <input
@@ -105,9 +107,9 @@ export default function SetupScreen({ onStartGame }: SetupScreenProps) {
                   value={name}
                   onChange={(e) => handleNameChange(idx, e.target.value)}
                   placeholder={`Player ${idx + 1} Name`}
-                  className="w-full pl-12 pr-4 py-3.5 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/20 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 font-medium transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 bg-[var(--bg-input)] border border-[var(--border-color)] rounded-2xl text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-theme-success focus:ring-1 focus:ring-theme-success/30 font-medium transition-all"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-semibold font-mono text-white/30 uppercase tracking-wider">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-semibold font-mono text-[var(--text-muted)] uppercase tracking-wider transition-colors duration-250">
                   Player {idx + 1}
                 </span>
               </motion.div>
@@ -118,10 +120,10 @@ export default function SetupScreen({ onStartGame }: SetupScreenProps) {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="flex items-center gap-2 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-2xl text-sm"
+              className="flex items-center gap-2 p-4 bg-theme-danger-bg border border-theme-danger-border text-theme-danger rounded-2xl text-sm"
               id="setup-error-alert"
             >
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
+              <AlertCircle className="w-4 h-4 shrink-0 text-theme-danger" />
               <span>{error}</span>
             </motion.div>
           )}
@@ -131,17 +133,17 @@ export default function SetupScreen({ onStartGame }: SetupScreenProps) {
               type="button"
               id="btn-randomize-names"
               onClick={handleRandomizeNames}
-              className="px-5 py-3.5 border border-white/10 bg-white/5 hover:bg-white/10 text-white/80 font-semibold rounded-2xl text-xs uppercase tracking-widest cursor-pointer transition-all active:scale-95"
+              className="px-5 py-3.5 border border-[var(--border-color)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] text-[var(--text-semi-muted)] hover:text-[var(--text-main)] font-semibold rounded-2xl text-xs uppercase tracking-widest cursor-pointer transition-all active:scale-95"
             >
               Shuffle
             </button>
             <button
               type="submit"
               id="btn-start-game"
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold rounded-2xl shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:shadow-[0_4px_30px_rgba(16,185,129,0.55)] cursor-pointer transition-all hover:translate-y-[-1px] active:scale-95"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-brand-from to-brand-to text-brand-text font-bold rounded-2xl shadow-lg shadow-theme-success/10 hover:shadow-xl hover:shadow-theme-success/20 cursor-pointer transition-all hover:translate-y-[-1px] active:scale-95"
             >
               <span className="uppercase tracking-widest text-xs">Start Match</span>
-              <Play className="w-4 h-4 fill-current text-black" />
+              <Play className="w-4 h-4 fill-current" />
             </button>
           </div>
         </form>
