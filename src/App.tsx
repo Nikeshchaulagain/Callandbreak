@@ -33,9 +33,36 @@ export default function App() {
     }
   };
 
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [rounds, setRounds] = useState<RoundData[]>(createEmptyRoundsCount(5));
-  const [gameState, setGameState] = useState<GameState>('setup');
+  const [players, setPlayers] = useState<Player[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.PLAYERS);
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error('Failed to load initial players:', e);
+      return [];
+    }
+  });
+
+  const [rounds, setRounds] = useState<RoundData[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ROUNDS);
+      return saved ? JSON.parse(saved) : createEmptyRoundsCount(5);
+    } catch (e) {
+      console.error('Failed to load initial rounds:', e);
+      return createEmptyRoundsCount(5);
+    }
+  });
+
+  const [gameState, setGameState] = useState<GameState>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.GAME_STATE);
+      return saved ? (saved as GameState) : 'setup';
+    } catch (e) {
+      console.error('Failed to load initial gameState:', e);
+      return 'setup';
+    }
+  });
+
   const [activeRoundNumber, setActiveRoundNumber] = useState<number | null>(null);
   
   // Dialog state for resetting confirmation
@@ -44,25 +71,6 @@ export default function App() {
   
   // Tutorial panel toggle
   const [showHowToPlay, setShowHowToPlay] = useState(false);
-
-
-
-  // Load from LocalStorage
-  useEffect(() => {
-    try {
-      const savedPlayers = localStorage.getItem(STORAGE_KEYS.PLAYERS);
-      const savedRounds = localStorage.getItem(STORAGE_KEYS.ROUNDS);
-      const savedState = localStorage.getItem(STORAGE_KEYS.GAME_STATE);
-
-      if (savedPlayers && savedRounds && savedState) {
-        setPlayers(JSON.parse(savedPlayers));
-        setRounds(JSON.parse(savedRounds));
-        setGameState(savedState as GameState);
-      }
-    } catch (e) {
-      console.error('Error recovering storage: ', e);
-    }
-  }, []);
 
   // Save to LocalStorage
   const saveState = (currentPlayers: Player[], currentRounds: RoundData[], currentState: GameState) => {

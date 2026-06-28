@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Crown, Award, Sparkles, RefreshCw, Calendar, Flame, Check, AlertCircle, ArrowLeft } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { Player, RoundData, PlayerStats } from '../types';
 import { computeStats } from './Leaderboard';
 
@@ -28,6 +29,53 @@ export default function WinnerScreen({
   const podium3rd = stats.find(s => s.rank === 3) || stats[2];
   const podium4th = stats.find(s => s.rank === 4) || stats[3];
 
+  const triggerConfettiCelebration = () => {
+    // Initial big colorful burst
+    confetti({
+      particleCount: 150,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ['#FFD700', '#FFA500', '#FF8C00', '#00E676', '#00B0FF', '#E040FB'],
+      zIndex: 1000,
+    });
+
+    // Side bursts
+    const end = Date.now() + (3 * 1000);
+    const interval = setInterval(() => {
+      if (Date.now() > end) {
+        clearInterval(interval);
+        return;
+      }
+      confetti({
+        particleCount: 25,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ['#FFD700', '#FFA500', '#00E676'],
+        zIndex: 1000,
+      });
+      confetti({
+        particleCount: 25,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ['#FFD700', '#FFA500', '#00B0FF'],
+        zIndex: 1000,
+      });
+    }, 250);
+
+    return interval;
+  };
+
+  useEffect(() => {
+    const interval = triggerConfettiCelebration();
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, []);
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-10 relative" id="winner-screen-container">
       {/* Decorative Fireworks / Header */}
@@ -35,10 +83,17 @@ export default function WinnerScreen({
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.95 }}
           transition={{ type: 'spring', damping: 15 }}
-          className="inline-flex p-4 bg-gradient-to-r from-brand-from to-brand-to text-brand-text rounded-3xl shadow-2xl mb-2"
+          onClick={triggerConfettiCelebration}
+          className="inline-flex p-4 bg-gradient-to-r from-brand-from to-brand-to text-brand-text rounded-3xl shadow-2xl mb-2 cursor-pointer select-none group relative"
+          title="Click for Celebration!"
         >
-          <Crown className="w-12 h-12 fill-current text-amber-300" />
+          <Crown className="w-12 h-12 fill-current text-amber-300 group-hover:animate-wiggle" />
+          <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] font-bold text-theme-success font-mono uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Click to Celebrate! 🎉
+          </span>
         </motion.div>
         
         <motion.p
